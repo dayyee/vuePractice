@@ -3,11 +3,13 @@
     <h1>Home</h1>
     <div>
       <v-btn @click="btnUpdate">1씩 증가시키기 : {{ count }}</v-btn>
-      <p>state : {{ btn }}</p>
+      <p>state : {{ count }}</p>
     </div>
     <div>
-      <v-btn @click="getData">axios 데이터 불러오기 </v-btn>
+      <v-btn @click="getData">axios get 데이터 불러오기 </v-btn>
+      <v-btn @click="postData1">axios post 데이터 불러오기 </v-btn>
       <p v-if="datas.length > 0">data : {{ datas }}</p>
+      <p v-if="datas.length > 0">data : {{ research }}</p>
     </div>
     <v-list-tile router :to="{ name: 'apple' }" exact>
       <v-list-tile-action>
@@ -22,26 +24,19 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
-import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
-    return {
-      datas: [],
-    };
+    return {};
   },
   computed: {
-    ...mapGetters({ count: "btnGet" }),
-    ...mapState(["btn"]),
+    ...mapGetters({ count: "btnGet", datas: "datas", research: "research" }),
   },
   methods: {
-    ...mapActions(["btnUpdate"]),
-    getData() {
-      axios.get(`https://codingapple1.github.io/vue/more0.json`).then((res) => {
-        const result = res.data;
-        this.datas.push(result);
-      });
+    ...mapActions(["btnUpdate", "getData", "postData"]),
+    postData1() {
+      this.postData({ name: "David" });
     },
   },
 };
