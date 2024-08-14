@@ -8,6 +8,7 @@ Vue.config.productionTip = false
 
 export const EventBus = new Vue()
 
+//tests
 new Vue({
   router,
   store,
