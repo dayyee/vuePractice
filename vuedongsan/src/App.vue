@@ -1,52 +1,54 @@
 <template>
-  <!--
+  <div>
+    <!--
   <div v-if="1 == 2">안녕하세요.</div>
   <div v-else-if="1 == 1">안녕하세요2</div>
   <div v-else>안녕하세요1</div>
   -->
-  <transition name="fade">
-    <Modal
-      @closeModal="ModalWindow = false"
-      :datas="datas"
-      :ProductId="ProductId"
-      :ModalWindow="ModalWindow"
+    <transition name="fade">
+      <Modal
+        @closeModal="ModalWindow = false"
+        :datas="datas"
+        :ProductId="ProductId"
+        :ModalWindow="ModalWindow"
+      />
+    </transition>
+    <!--props 문법 사용: 근데 read-only임.-->
+    <div class="menu">
+      <a v-for="a in menus" :key="a">{{ a }}</a>
+      <!--<a v-for="(a, i) in menus" :key="i">{{ a }}</a>-->
+      <!--key 안적으면 실행안됨. i는 변하는 데이터.. 컴퓨터가 식별할 때 쓰는..(a:array내 데이터, i:1씩 증가하는 정수)-->
+      <!-- <a>Products</a> -->
+      <!-- <a>About</a> -->
+    </div>
+
+    <Discount :discountPer="discountPer" />
+
+    <button @click="priceSort">가나다순 정렬</button>
+    <button @click="backSort">되돌리기</button>
+    <Card
+      @openModal="
+        ModalWindow = true;
+        ProductId = $event;
+      "
+      v-for="(data, i) in datas"
+      :key="i"
+      :data="datas[i]"
+      :RedBtn="datas[i].redButton"
     />
-  </transition>
-  <!--props 문법 사용: 근데 read-only임.-->
-  <div class="menu">
-    <a v-for="a in menus" :key="a">{{ a }}</a>
-    <!--<a v-for="(a, i) in menus" :key="i">{{ a }}</a>-->
-    <!--key 안적으면 실행안됨. i는 변하는 데이터.. 컴퓨터가 식별할 때 쓰는..(a:array내 데이터, i:1씩 증가하는 정수)-->
-    <!-- <a>Products</a> -->
-    <!-- <a>About</a> -->
-  </div>
 
-  <Discount :discountPer="discountPer" />
-
-  <button @click="priceSort">가나다순 정렬</button>
-  <button @click="backSort">되돌리기</button>
-
-  <Card
-    @openModal="
-      ModalWindow = true;
-      ProductId = $event; //or i로 해도됨.
-    "
-    v-for="(data, i) in datas"
-    :key="i"
-    :data="datas[i]"
-    :RedBtn="datas[i].redButton"
-  />
-
-  <!--
+    <!--
+    저 위에 openModal안에 ProductId i로 해도됨.
   <div v-for="(a, i) in products" :key="i">
     ProductId: String,ducts(or 3)는 1,2,3이고 i는 0,1,2-->
-  <!-- <img src="./assets/room1.jpg" class="room-img" />
+    <!-- <img src="./assets/room1.jpg" class="room-img" />
     <h4 class="red" :style="스타일">{{ products[i] }}</h4>
     <p>{{ prices[i] }}</p>
     <button @click="increase(i)">허위매물신고</button>
     <span>신고수:{{ 신고수[i] }}</span>
   </div>
---></template>
+  --></div>
+</template>
 
 <script>
 import datas from "./assets/oneroom";

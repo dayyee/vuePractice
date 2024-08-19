@@ -1,5 +1,16 @@
 <template>
-  <div>안녕</div>
+  <div>
+    <slotTest>
+      <template v-slot:varName>자식 컴포넌트에게 이 내용을 보여줘</template>
+    </slotTest>
+  </div>
 </template>
 
-<script></script>
+<script>
+import slotTest from "../components/Homes/slotTest.vue";
+export default {
+  components: {
+    slotTest,
+  },
+};
+</script>
