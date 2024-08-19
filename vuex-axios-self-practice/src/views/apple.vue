@@ -1,7 +1,9 @@
 <template>
   <div>
     <slotTest>
-      <template v-slot:varName>자식 컴포넌트에게 이 내용을 보여줘</template>
+      <template v-slot:varName
+        >나는 부모야. 자식 컴포넌트에게 이 내용을 보여줘</template
+      >
     </slotTest>
   </div>
 </template>
