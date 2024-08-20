@@ -56,3 +56,27 @@ export default new Vuex.Store({
     },
   },
 });
+
+// export function dialogBox({vue, type, title, message, callback}){
+//   var n = null
+//   if(vue){
+//     n=vue
+//   } else {
+//     n= new Vue()
+//   }
+//   const vm = n.$root
+//   if ( type === 'alert'){
+//     return vm.$alert(message, '알림', {
+//       dangerouslyUseHTMLString: true,
+//       confirmButtonText : '확인',
+//       center: true
+//     })
+//   } else if (type==='confirm'){
+//     return vm.$confirm(message, '알림' {
+//       dangerouslyUseHTMLString: true,
+//       confirmButtonText : '확인',
+//       cancleButtonText : '취소',
+//       center: true
+//     })
+//   }
+// }
