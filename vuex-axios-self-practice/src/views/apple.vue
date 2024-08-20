@@ -10,6 +10,12 @@
       <el-button type="text" @click="open"
         >Click to open the Message Box</el-button
       >
+
+      <el-dialog title="aaa" :visible.sync="isshow" @close="resetisShow">
+        <div slot="footer">
+          <el-button type="primary" @click="resetisShow"> 확인 </el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -22,20 +28,19 @@ export default {
       dialogVisible: false,
     };
   },
+  props: {
+    isShow: {
+      type: Bosolean,
+      default: false,
+    },
+  },
   components: {
-    slotTest,
+    // slotTest,
   },
   methods: {
-    open() {
-      this.$alert("This is a message", "Title", {
-        confirmButtonText: "OK",
-        callback: (action) => {
-          this.$message({
-            type: "info",
-            message: `action: ${action}`,
-          });
-        },
-      });
+    resetisShow() {
+      this.$emit("update:isShow", false);
+      console.log("=====resetisShow", this.isShow);
     },
   },
 };
