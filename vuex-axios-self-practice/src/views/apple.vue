@@ -11,10 +11,10 @@
         >Click to open the Message Box</el-button
       >
 
-      <el-dialog title="aaa" :visible.sync="isshow" @close="resetisShow">
-        <div slot="footer">
+      <el-dialog title="aaa" v-model:visible="isshow" @close="resetisShow">
+        <template v-slot:footer>
           <el-button type="primary" @click="resetisShow"> 확인 </el-button>
-        </div>
+        </template>
       </el-dialog>
     </div>
   </div>
