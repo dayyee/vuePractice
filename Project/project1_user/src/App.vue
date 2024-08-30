@@ -11,7 +11,7 @@
               :loading="loading"
               append-inner-icon="mdi-magnify"
               density="compact"
-              label="Search templates"
+              label="ID, 이름, 과목명으로 조회 가능합니다."
               variant="solo"
               hide-details
               single-line
@@ -19,10 +19,10 @@
             ></v-text-field>
           </v-col>
           <v-col cols="auto">
-            <v-btn>이거</v-btn>
+            <v-btn color="grey-darken-4">FILE UPLOAD</v-btn>
           </v-col>
           <v-col cols="auto">
-            <v-btn>저거</v-btn>
+            <v-btn color="black">FILE LIST</v-btn>
           </v-col>
         </v-row>
       </v-card-text>
@@ -51,13 +51,15 @@
               <td>
                 <v-row justify="center">
                   <v-col cols="auto" class="button-col">
-                    <v-btn size="small" color="indigo-darken-1">DETAIL</v-btn>
+                    <v-btn size="small" color="indigo-lighten-1">DETAIL</v-btn>
                   </v-col>
                   <v-col cols="auto" class="button-col">
-                    <v-btn size="small" color="amber-darken-1">EDIT</v-btn>
+                    <v-btn size="small" color="amber-lighten-1" @click="onOff"
+                      >EDIT</v-btn
+                    >
                   </v-col>
                   <v-col cols="auto" class="button-col">
-                    <v-btn size="small" color="red-darken-1">DELETE</v-btn>
+                    <v-btn size="small" color="red-lighten-1">DELETE</v-btn>
                   </v-col>
                 </v-row>
               </td>
@@ -75,12 +77,15 @@
       </v-row>
     </v-footer>
   </v-app>
+
+  <EditPopup :dialog="dialog"></EditPopup>
 </template>
 
 <script>
+import EditPopup from "./components/EditPopup.vue";
 export default {
   name: "App",
-  components: {},
+  components: { EditPopup },
   data() {
     return {
       desserts: [
@@ -101,6 +106,7 @@ export default {
       ],
       loaded: false,
       loading: false,
+      dialog: false,
     };
   },
   methods: {
@@ -111,6 +117,10 @@ export default {
         this.loading = false;
         this.loaded = true;
       }, 2000);
+    },
+    onOff() {
+      this.dialog = true;
+      console.log(this.dialog);
     },
   },
 };
@@ -132,6 +142,7 @@ export default {
   margin-top: 50px;
   margin-bottom: 50px;
   margin-left: 180px;
+  text-shadow: 10px 10px 9px rgba(125, 133, 131, 0.773);
 }
 .button-col {
   margin-left: 0px;
@@ -139,6 +150,7 @@ export default {
 }
 .column {
   font-weight: 500;
+  text-shadow: 1px 1px 5px rgba(125, 133, 131, 0.773);
 }
 .row {
   color: rgb(109, 107, 107);
