@@ -78,7 +78,7 @@
     </v-footer>
   </v-app>
 
-  <EditPopup :dialog="dialog"></EditPopup>
+  <EditPopup v-model:dialog="dialog"></EditPopup>
 </template>
 
 <script>
