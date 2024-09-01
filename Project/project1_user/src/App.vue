@@ -42,7 +42,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in desserts" :key="item.id" class="row">
+            <tr v-for="item in user" :key="item.id" class="row">
               <td>{{ item.id }}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.age }}</td>
@@ -51,10 +51,18 @@
               <td>
                 <v-row justify="center">
                   <v-col cols="auto" class="button-col">
-                    <v-btn size="small" color="indigo-lighten-1">DETAIL</v-btn>
+                    <v-btn
+                      size="small"
+                      color="indigo-lighten-1"
+                      @click="DetailPopupOnOff"
+                      >DETAIL</v-btn
+                    >
                   </v-col>
                   <v-col cols="auto" class="button-col">
-                    <v-btn size="small" color="amber-lighten-1" @click="onOff"
+                    <v-btn
+                      size="small"
+                      color="amber-lighten-1"
+                      @click="EditPopupOnOff"
                       >EDIT</v-btn
                     >
                   </v-col>
@@ -78,17 +86,20 @@
     </v-footer>
   </v-app>
 
-  <EditPopup v-model:dialog="dialog"></EditPopup>
+  <EditPopup v-model:EditPopupDialog="EditPopupDialog"></EditPopup>
+  <DetailPopup v-model:DetailPopupDialog="DetailPopupDialog"></DetailPopup>
 </template>
 
 <script>
 import EditPopup from "./components/EditPopup.vue";
+import DetailPopup from "./components/DetailPopup.vue";
+
 export default {
   name: "App",
-  components: { EditPopup },
+  components: { EditPopup, DetailPopup },
   data() {
     return {
-      desserts: [
+      user: [
         {
           id: 1,
           name: "한국어",
@@ -106,7 +117,8 @@ export default {
       ],
       loaded: false,
       loading: false,
-      dialog: false,
+      EditPopupDialog: false,
+      DetailPopupDialog: false,
     };
   },
   methods: {
@@ -118,9 +130,11 @@ export default {
         this.loaded = true;
       }, 2000);
     },
-    onOff() {
-      this.dialog = true;
-      console.log(this.dialog);
+    EditPopupOnOff() {
+      this.EditPopupDialog = true;
+    },
+    DetailPopupOnOff() {
+      this.DetailPopupDialog = true;
     },
   },
 };

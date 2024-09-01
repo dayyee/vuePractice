@@ -1,7 +1,8 @@
 <template>
   <div class="pa-4 text-center">
-    <v-dialog max-width="500" :model-value="dialog">
-      <v-card prepend-icon="mdi-account" title="User Profile" class="text-h2">
+    <v-dialog max-width="500" :model-value="EditPopupDialog">
+      <v-card
+        ><div class="PopupTitle">👤 User Profile</div>
         <v-card-text>
           <v-col cols="auto" class="cols">
             <v-text-field
@@ -57,6 +58,7 @@
 
 <script>
 export default {
+  name: "EditPopup",
   data() {
     return {
       formData: {
@@ -68,7 +70,7 @@ export default {
     };
   },
   props: {
-    dialog: {
+    EditPopupDialog: {
       type: Boolean,
       required: true,
     },
@@ -81,7 +83,7 @@ export default {
     //   console.log("안녕");
     // },
     closeDialog() {
-      this.$emit("update:dialog", false);
+      this.$emit("update:EditPopupDialog", false);
     },
     submitForm() {
       console.log(this.formData);
