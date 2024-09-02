@@ -1,6 +1,6 @@
 <template>
   <div class="pa-4 text-center">
-    <v-dialog max-width="500" :model-value="EditPopupDialog">
+    <v-dialog max-width="500" :model-value="EditPopupDialog" persistent>
       <v-card
         ><div class="PopupTitle">👤 User Profile</div>
         <v-card-text>
@@ -32,6 +32,7 @@
             <v-text-field
               label="PHONE NUMBER"
               hint="하이픈(-)을 포함해서 작성해주세요."
+              persistent-hint
               required
             ></v-text-field>
           </v-col>
@@ -44,12 +45,7 @@
 
           <v-btn text="Close" variant="plain" @click="closeDialog"></v-btn>
 
-          <v-btn
-            color="primary"
-            text="Save"
-            variant="tonal"
-            @click="submitForm"
-          ></v-btn>
+          <v-btn text="Save" variant="tonal" @click="submitForm"></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

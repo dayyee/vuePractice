@@ -1,6 +1,11 @@
 <template>
   <div class="pa-4 text-center">
-    <v-dialog :model-value="DetailPopupDialog" max-width="600" max-height="600">
+    <v-dialog
+      :model-value="DetailPopupDialog"
+      max-width="600"
+      max-height="600"
+      persistent
+    >
       <v-card
         ><div class="PopupTitle">📑 Detail View</div>
         <v-table fixed-header>

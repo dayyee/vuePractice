@@ -19,10 +19,12 @@
             ></v-text-field>
           </v-col>
           <v-col cols="auto">
-            <v-btn color="grey-darken-4">FILE UPLOAD</v-btn>
+            <v-btn color="grey-darken-4" @click="FileUploadPopupOnOff"
+              >FILE UPLOAD</v-btn
+            >
           </v-col>
           <v-col cols="auto">
-            <v-btn color="black">FILE LIST</v-btn>
+            <v-btn color="black" @click="FileListPopupOnOff">FILE LIST</v-btn>
           </v-col>
         </v-row>
       </v-card-text>
@@ -67,7 +69,12 @@
                     >
                   </v-col>
                   <v-col cols="auto" class="button-col">
-                    <v-btn size="small" color="red-lighten-1">DELETE</v-btn>
+                    <v-btn
+                      size="small"
+                      color="red-lighten-1"
+                      @click="DeletePopupOnOff"
+                      >DELETE</v-btn
+                    >
                   </v-col>
                 </v-row>
               </td>
@@ -88,15 +95,31 @@
 
   <EditPopup v-model:EditPopupDialog="EditPopupDialog"></EditPopup>
   <DetailPopup v-model:DetailPopupDialog="DetailPopupDialog"></DetailPopup>
+  <DeletePopup v-model:DeletePopupDialog="DeletePopupDialog"></DeletePopup>
+  <FileUploadPopup
+    v-model:FileUploadPopupDialog="FileUploadPopupDialog"
+  ></FileUploadPopup>
+  <FileListPopup
+    v-model:FileListPopupDialog="FileListPopupDialog"
+  ></FileListPopup>
 </template>
 
 <script>
 import EditPopup from "./components/EditPopup.vue";
 import DetailPopup from "./components/DetailPopup.vue";
+import DeletePopup from "./components/DeletePopup.vue";
+import FileUploadPopup from "./components/FileUploadPopup.vue";
+import FileListPopup from "./components/FileListPopup.vue";
 
 export default {
   name: "App",
-  components: { EditPopup, DetailPopup },
+  components: {
+    EditPopup,
+    DetailPopup,
+    DeletePopup,
+    FileUploadPopup,
+    FileListPopup,
+  },
   data() {
     return {
       user: [
@@ -119,6 +142,9 @@ export default {
       loading: false,
       EditPopupDialog: false,
       DetailPopupDialog: false,
+      DeletePopupDialog: false,
+      FileUploadPopupDialog: false,
+      FileListPopupDialog: false,
     };
   },
   methods: {
@@ -135,6 +161,15 @@ export default {
     },
     DetailPopupOnOff() {
       this.DetailPopupDialog = true;
+    },
+    DeletePopupOnOff() {
+      this.DeletePopupDialog = true;
+    },
+    FileUploadPopupOnOff() {
+      this.FileUploadPopupDialog = true;
+    },
+    FileListPopupOnOff() {
+      this.FileListPopupDialog = true;
     },
   },
 };
