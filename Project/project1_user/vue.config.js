@@ -17,3 +17,15 @@ module.exports = {
     ],
   },
 };
+
+module.exports = {
+  devServer: {
+    port: 8090, // 개발: FE 페이지 포트
+  },
+  // proxy: {
+  //   "/users": {
+  //     target: "http://localhost:8080", // api 요청 시 BE 호출
+  //     changeOrigin: true,
+  //   },
+  // },
+};

@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <div class="title">User Management Page</div>
-
     <!-- 😇여기부터 다시 -->
     <v-card class="mx-auto" color="surface-light" width="70%">
       <v-card-text>
@@ -15,7 +14,7 @@
               variant="solo"
               hide-details
               single-line
-              @click:append-inner="onClick"
+              @click:append-inner="SearchBarOnClick"
             ></v-text-field>
           </v-col>
           <v-col cols="auto">
@@ -44,12 +43,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in user" :key="item.id" class="row">
-              <td>{{ item.id }}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.age }}</td>
-              <td>{{ item.email }}</td>
-              <td>{{ item.phoneNum }}</td>
+            <tr v-for="user in paginatedUsers" :key="user.id" class="row">
+              <td>{{ user.id }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.age }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.phoneNum }}</td>
               <td>
                 <v-row justify="center">
                   <v-col cols="auto" class="button-col">
@@ -87,7 +86,12 @@
     <v-footer app>
       <v-row justify="center">
         <v-col cols="auto">
-          <v-pagination :length="4"></v-pagination>
+          <!-- currentPage는 v-model로 되어있고, 값이 계속 바뀜-->
+          <v-pagination
+            v-model="currentPage"
+            :length="totalPages"
+            :total-visible="5"
+          ></v-pagination>
         </v-col>
       </v-row>
     </v-footer>
@@ -110,6 +114,7 @@ import DetailPopup from "./components/DetailPopup.vue";
 import DeletePopup from "./components/DeletePopup.vue";
 import FileUploadPopup from "./components/FileUploadPopup.vue";
 import FileListPopup from "./components/FileListPopup.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -122,22 +127,6 @@ export default {
   },
   data() {
     return {
-      user: [
-        {
-          id: 1,
-          name: "한국어",
-          age: 159,
-          email: "Frozen@mz.co.kr",
-          phoneNum: "010-0000-0000",
-        },
-        {
-          id: 2,
-          name: "한국어",
-          age: 159,
-          email: "Frozen@mz.co.kr",
-          phoneNum: "010-0000-0000",
-        },
-      ],
       loaded: false,
       loading: false,
       EditPopupDialog: false,
@@ -145,12 +134,17 @@ export default {
       DeletePopupDialog: false,
       FileUploadPopupDialog: false,
       FileListPopupDialog: false,
+
+      // pagination
+      usersListForPage: [],
+      currentPage: 1, // 현재 페이지 번호
+      itemsPerPage: 5, // 페이지당 항목 수(내가 설정)
     };
   },
   methods: {
-    onClick() {
+    ...mapActions(["AC_USERS_OBJ"]),
+    SearchBarOnClick() {
       this.loading = true;
-
       setTimeout(() => {
         this.loading = false;
         this.loaded = true;
@@ -170,6 +164,38 @@ export default {
     },
     FileListPopupOnOff() {
       this.FileListPopupDialog = true;
+    },
+    pageLen() {
+      return;
+    },
+    // check() {
+    //   console.log();
+    // },
+  },
+  // 이렇게 액션이니까 함수로 들어가있는.. 이 created에?
+  created() {
+    this.AC_USERS_OBJ();
+  },
+  // 데이터 불러오고..
+  computed: {
+    ...mapGetters({
+      usersObj: "GE_USERS_OBJ",
+    }),
+    usersArray() {
+      return Object.values(this.usersObj); // 객체를 배열로 변환
+    },
+    totalPages() {
+      return Math.ceil(this.usersArray.length / this.itemsPerPage);
+    },
+    /*
+    v-model을 사용하여 currentPage를 v-pagination에 바인딩하면, 사용자가 페이지 번호를 클릭할 때마다 currentPage 값이 자동으로 업데이트됩니다. 
+    이 값이 변경되면, paginatedUsers와 같은 관련 데이터도 자동으로 업데이트되어, 올바른 페이지의 데이터가 화면에 표시됩니다.
+    현재 페이지를 유지하려면 v-model 속성을 제공하기만 하면 됩니다. (이거 vuetify 사용법인듯?)
+    */
+    paginatedUsers() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.usersArray.slice(start, end);
     },
   },
 };
