@@ -9,6 +9,7 @@
               label="NAME"
               v-model="formData.name"
               required
+              :placeholder="userObjById.name"
             ></v-text-field>
           </v-col>
 
@@ -17,6 +18,7 @@
               label="AGE"
               v-model="formData.age"
               required
+              :placeholder="userObjById.age"
             ></v-text-field>
           </v-col>
 
@@ -25,6 +27,7 @@
               label="EMAIL"
               v-model="formData.email"
               required
+              :placeholder="userObjById.email"
             ></v-text-field>
           </v-col>
 
@@ -34,6 +37,7 @@
               hint="하이픈(-)을 포함해서 작성해주세요."
               persistent-hint
               required
+              :placeholder="userObjById.phoneNum"
             ></v-text-field>
           </v-col>
         </v-card-text>
@@ -53,6 +57,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "EditPopup",
   data() {
@@ -70,14 +75,22 @@ export default {
       type: Boolean,
       required: true,
     },
+    id: {
+      type: Number,
+      required: true,
+    },
   },
   created() {
-    //this.start();
+    this.AC_USER_OBJ_BY_ID(this.id);
+  },
+  computed: {
+    ...mapGetters({ userObjById: "GE_USER_OBJ_BY_ID" }),
   },
   methods: {
     // start() {
     //   console.log("안녕");
     // },
+    ...mapActions(["AC_USER_OBJ_BY_ID"]),
     closeDialog() {
       this.$emit("update:EditPopupDialog", false);
     },

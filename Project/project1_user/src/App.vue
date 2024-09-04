@@ -63,7 +63,7 @@
                     <v-btn
                       size="small"
                       color="amber-lighten-1"
-                      @click="EditPopupOnOff"
+                      @click="EditPopupOnOff(user.id)"
                       >EDIT</v-btn
                     >
                   </v-col>
@@ -97,7 +97,10 @@
     </v-footer>
   </v-app>
 
-  <EditPopup v-model:EditPopupDialog="EditPopupDialog"></EditPopup>
+  <EditPopup
+    v-model:EditPopupDialog="EditPopupDialog"
+    :id="selectedId"
+  ></EditPopup>
   <DetailPopup v-model:DetailPopupDialog="DetailPopupDialog"></DetailPopup>
   <DeletePopup v-model:DeletePopupDialog="DeletePopupDialog"></DeletePopup>
   <FileUploadPopup
@@ -139,6 +142,8 @@ export default {
       usersListForPage: [],
       currentPage: 1, // 현재 페이지 번호
       itemsPerPage: 5, // 페이지당 항목 수(내가 설정)
+
+      selectedId: null,
     };
   },
   methods: {
@@ -150,7 +155,8 @@ export default {
         this.loaded = true;
       }, 2000);
     },
-    EditPopupOnOff() {
+    EditPopupOnOff(id) {
+      this.selectedId = id;
       this.EditPopupDialog = true;
     },
     DetailPopupOnOff() {
