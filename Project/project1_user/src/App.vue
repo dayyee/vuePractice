@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div class="title">User Management Page</div>
-    <!-- 😇여기부터 다시 -->
+
     <v-card class="mx-auto" color="surface-light" width="70%">
       <v-card-text>
         <v-row align="center">
@@ -55,11 +55,12 @@
                     <v-btn
                       size="small"
                       color="indigo-lighten-1"
-                      @click="DetailPopupOnOff"
+                      @click="DetailPopupOnOff(user.id)"
                       >DETAIL</v-btn
                     >
                   </v-col>
                   <v-col cols="auto" class="button-col">
+                    <!--tbody로 묶여 있으니 user.id가 뭔지 아는 것.. -->
                     <v-btn
                       size="small"
                       color="amber-lighten-1"
@@ -99,9 +100,12 @@
 
   <EditPopup
     v-model:EditPopupDialog="EditPopupDialog"
-    :id="selectedId"
+    :id="Number(selectedId)"
   ></EditPopup>
-  <DetailPopup v-model:DetailPopupDialog="DetailPopupDialog"></DetailPopup>
+  <DetailPopup
+    v-model:DetailPopupDialog="DetailPopupDialog"
+    :id="Number(selectedId)"
+  ></DetailPopup>
   <DeletePopup v-model:DeletePopupDialog="DeletePopupDialog"></DeletePopup>
   <FileUploadPopup
     v-model:FileUploadPopupDialog="FileUploadPopupDialog"
@@ -159,7 +163,8 @@ export default {
       this.selectedId = id;
       this.EditPopupDialog = true;
     },
-    DetailPopupOnOff() {
+    DetailPopupOnOff(id) {
+      this.selectedId = id;
       this.DetailPopupDialog = true;
     },
     DeletePopupOnOff() {
@@ -178,6 +183,13 @@ export default {
     //   console.log();
     // },
   },
+  watch: {
+    EditPopupDialog(value) {
+      if (!value) {
+        this.AC_USERS_OBJ();
+      }
+    },
+  },
   // 이렇게 액션이니까 함수로 들어가있는.. 이 created에?
   created() {
     this.AC_USERS_OBJ();
@@ -194,7 +206,7 @@ export default {
       return Math.ceil(this.usersArray.length / this.itemsPerPage);
     },
     /*
-    v-model을 사용하여 currentPage를 v-pagination에 바인딩하면, 사용자가 페이지 번호를 클릭할 때마다 currentPage 값이 자동으로 업데이트됩니다. 
+    v-model을 사용하여 currentPage를 v-pagination에 바인딩하면, 사용자가 페이지 번호를 클릭할 때마다 currentPage 값이 자동으로 업데이트됩니다.
     이 값이 변경되면, paginatedUsers와 같은 관련 데이터도 자동으로 업데이트되어, 올바른 페이지의 데이터가 화면에 표시됩니다.
     현재 페이지를 유지하려면 v-model 속성을 제공하기만 하면 됩니다. (이거 vuetify 사용법인듯?)
     */

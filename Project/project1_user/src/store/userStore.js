@@ -1,5 +1,10 @@
 import { createStore } from "vuex";
-import { findAllUsers, findUserById } from "../api/userAPI";
+import {
+  findAllUsers,
+  findUserById,
+  updateUserById,
+  findSubjectById,
+} from "../api/userAPI";
 
 // vuex세팅
 const userStore = createStore({
@@ -7,6 +12,7 @@ const userStore = createStore({
     return {
       usersObj: {}, // list로 받으면 안됨. [[]] 두개가 생성되어서 안된다.
       userObjById: {},
+      subjectObjById: {},
     };
   },
   getters: {
@@ -15,6 +21,7 @@ const userStore = createStore({
     // state, getters, mutations, actions는 결국 상태 변화를 위해 사용하는 것이기에.
     GE_USERS_OBJ: (state) => state.usersObj,
     GE_USER_OBJ_BY_ID: (state) => state.userObjById,
+    GE_SUBJECT_OBJ_BY_ID: (state) => state.subjectObjById,
   },
   mutations: {
     MU_USERS_OBJ: async (state, res) => {
@@ -25,6 +32,9 @@ const userStore = createStore({
     MU_USER_OBJ_BY_ID: (state, res) => {
       state.userObjById = res;
     },
+    MU_SUBJECT_OBJ_BY_ID: (state, res) => {
+      state.subjectObjById = res;
+    },
   },
   actions: {
     AC_USERS_OBJ: async ({ commit }) => {
@@ -32,8 +42,31 @@ const userStore = createStore({
       commit("MU_USERS_OBJ", res);
     },
     AC_USER_OBJ_BY_ID: async ({ commit }, id) => {
-      const res = await findUserById(id);
-      commit("MU_USER_OBJ_BY_ID", res);
+      try {
+        const res = await findUserById(id);
+        commit("MU_USER_OBJ_BY_ID", res);
+      } catch (err) {
+        console.error("findUserById", err);
+      }
+    },
+    // eslint-disable-next-line no-unused-vars
+    AC_UPDATE_USER_BY_ID: async ({ commit }, formData) => {
+      try {
+        const res = await updateUserById(formData);
+        return res;
+      } catch (err) {
+        console.error("updateUserById", err);
+      }
+    },
+
+    // subject
+    AC_SUBJECT_OBJ_BY_ID: async ({ commit }, id) => {
+      try {
+        const res = await findSubjectById(id);
+        commit("MU_SUBJECT_OBJ_BY_ID", res);
+      } catch (err) {
+        console.error("findSubjectById", err);
+      }
     },
   },
 });

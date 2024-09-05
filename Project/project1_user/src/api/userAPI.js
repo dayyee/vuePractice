@@ -15,7 +15,29 @@ export async function findUserById(id) {
   try {
     const result = await axios.get(`${url}/${id}`);
     return result.data;
-  } catch {
-    console.log("error: findUserById");
+  } catch (err) {
+    console.log("error: findUserById", err);
+  }
+}
+
+export async function updateUserById(formData) {
+  if (!formData.id) {
+    console.error("Error: formData.id is undefined or null.");
+    return;
+  }
+  try {
+    const result = await axios.put(`${url}/${formData.id}`, formData);
+    return result.data;
+  } catch (err) {
+    console.log("error : updateUserById", err);
+  }
+}
+
+export async function findSubjectById(id) {
+  try {
+    const result = await axios.get(`${url}/detail/${id}`);
+    return result.data;
+  } catch (err) {
+    console.log("error: findSubjectById", err);
   }
 }

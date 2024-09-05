@@ -6,5 +6,5 @@ import userStore from "./store/userStore.js";
 
 const app = createApp(App);
 app.use(vuetify);
-app.use(userStore); // vue 전역에 store 사용한다고
+app.use(userStore); // vue 전역에 store 사용한다고 선언
 app.mount("#app");

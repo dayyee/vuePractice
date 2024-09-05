@@ -13,21 +13,16 @@
             <tr class="column">
               <th class="text-center">ID</th>
               <th class="text-center">NAME</th>
-              <th class="text-center">CODE</th>
-              <th class="text-center">TITLE</th>
+              <th class="text-center">SUBJECT CODE</th>
+              <th class="text-center">SUBJECT TITLE</th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="item in jointable"
-              :key="item.id"
-              class="row"
-              align="center"
-            >
-              <td>{{ item.id }}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.code }}</td>
-              <td>{{ item.title }}</td>
+            <tr class="row" align="center">
+              <td>{{ detailData.id }}</td>
+              <td>{{ detailData.name }}</td>
+              <td>{{ detailData.code }}</td>
+              <td>{{ detailData.title }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -44,54 +39,17 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "DetailPopup",
   data() {
     return {
-      jointable: [
-        {
-          id: 1,
-          name: "어쩌고",
-          code: 10,
-          title: "세계사",
-        },
-        {
-          id: 2,
-          name: "저쩌고",
-          code: 20,
-          title: "한국사",
-        },
-        {
-          id: 2,
-          name: "저쩌고",
-          code: 20,
-          title: "한국사",
-        },
-        {
-          id: 2,
-          name: "저쩌고",
-          code: 20,
-          title: "한국사",
-        },
-        {
-          id: 2,
-          name: "저쩌고",
-          code: 20,
-          title: "한국사",
-        },
-        {
-          id: 2,
-          name: "저쩌고",
-          code: 20,
-          title: "한국사",
-        },
-        {
-          id: 2,
-          name: "저쩌고",
-          code: 20,
-          title: "한국사",
-        },
-      ],
+      detailData: {
+        id: "",
+        name: "",
+        subjectCode: "",
+        subjectTitle: "",
+      },
     };
   },
   props: {
@@ -99,11 +57,39 @@ export default {
       type: Boolean,
       required: true,
     },
+    id: {
+      type: Number,
+      required: true,
+    },
   },
-  created() {},
+  watch: {
+    //EditPopupDialog가 true일 때만 액션 실행
+    DetailPopupDialog(value) {
+      console.log("watch");
+      if (value) {
+        this.loadUserData();
+      }
+    },
+  },
+  computed: {
+    ...mapGetters({ subjectObjById: "GE_SUBJECT_OBJ_BY_ID" }),
+  },
   methods: {
+    ...mapActions(["AC_SUBJECT_OBJ_BY_ID"]),
     closeDialog() {
       this.$emit("update:DetailPopupDialog", false);
+      this.detailData = {};
+    },
+    async loadUserData() {
+      console.log("id", this.id);
+      await this.AC_SUBJECT_OBJ_BY_ID(this.id);
+      console.log(this.subjectObjById.code);
+      this.detailData = {
+        id: this.subjectObjById.id,
+        name: this.subjectObjById.name,
+        code: this.subjectObjById.code,
+        title: this.subjectObjById.title,
+      };
     },
   },
 };
