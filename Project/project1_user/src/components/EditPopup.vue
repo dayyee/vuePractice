@@ -26,7 +26,6 @@
             <v-text-field
               label="EMAIL"
               v-model="formData.email"
-              required
               :placeholder="userObjById.email"
             ></v-text-field>
           </v-col>
@@ -66,8 +65,8 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <!-- 
+  </div>
+  <!-- 
     😇 ㅎㅎ 보류...
     <v-sheet class="position-relative" min-height="450">
       <v-fade-transition hide-on-leave>
@@ -118,7 +117,6 @@
     </v-sheet>
 
  -->
-  </div>
 </template>
 
 <script>
@@ -135,8 +133,8 @@ export default {
         phoneNum: "",
       },
       confirmPopup: false,
-      updateOk: false,
-      updateTitle: "",
+      //updateOk: false,
+      //updateTitle: "",
     };
   },
   props: {
@@ -164,7 +162,7 @@ export default {
     ...mapActions(["AC_USER_OBJ_BY_ID", "AC_UPDATE_USER_BY_ID"]),
     closeDialog() {
       this.confirmPopup = false;
-      this.updateOk = false;
+      //this.updateOk = false;
       this.$emit("update:EditPopupDialog", false);
     },
     async submitForm() {
@@ -173,9 +171,9 @@ export default {
         const result = await this.AC_UPDATE_USER_BY_ID(this.formData);
 
         if (result) {
-          this.updateOk = true;
-          this.updateTitle = result;
-          console.log(this.updateOk, this.updateTitle);
+          //this.updateOk = true;
+          //this.updateTitle = result;
+          //console.log(this.updateOk, this.updateTitle);
           console.log("submit update user info: ", result);
           alert(result);
         }

@@ -41,3 +41,12 @@ export async function findSubjectById(id) {
     console.log("error: findSubjectById", err);
   }
 }
+
+export async function removeUserById(id) {
+  try {
+    const result = await axios.delete(`${url}/${id}`);
+    return result.data;
+  } catch (err) {
+    console.log("error: removeUserById", err);
+  }
+}

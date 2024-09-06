@@ -72,7 +72,7 @@
                     <v-btn
                       size="small"
                       color="red-lighten-1"
-                      @click="DeletePopupOnOff"
+                      @click="DeletePopupOnOff(user.id)"
                       >DELETE</v-btn
                     >
                   </v-col>
@@ -106,7 +106,10 @@
     v-model:DetailPopupDialog="DetailPopupDialog"
     :id="Number(selectedId)"
   ></DetailPopup>
-  <DeletePopup v-model:DeletePopupDialog="DeletePopupDialog"></DeletePopup>
+  <DeletePopup
+    v-model:DeletePopupDialog="DeletePopupDialog"
+    :id="Number(selectedId)"
+  ></DeletePopup>
   <FileUploadPopup
     v-model:FileUploadPopupDialog="FileUploadPopupDialog"
   ></FileUploadPopup>
@@ -167,7 +170,8 @@ export default {
       this.selectedId = id;
       this.DetailPopupDialog = true;
     },
-    DeletePopupOnOff() {
+    DeletePopupOnOff(id) {
+      this.selectedId = id;
       this.DeletePopupDialog = true;
     },
     FileUploadPopupOnOff() {

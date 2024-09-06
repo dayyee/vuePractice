@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { createStore } from "vuex";
 import {
   findAllUsers,
   findUserById,
   updateUserById,
   findSubjectById,
+  removeUserById,
 } from "../api/userAPI";
 
 // vuex세팅
@@ -49,13 +51,23 @@ const userStore = createStore({
         console.error("findUserById", err);
       }
     },
-    // eslint-disable-next-line no-unused-vars
+
     AC_UPDATE_USER_BY_ID: async ({ commit }, formData) => {
       try {
         const res = await updateUserById(formData);
         return res;
       } catch (err) {
         console.error("updateUserById", err);
+      }
+    },
+
+    // delete User
+    AC_REMOVE_USER_BY_ID: async ({ commit }, id) => {
+      try {
+        const res = await removeUserById(id);
+        return res;
+      } catch (err) {
+        console.error("removeUserById", err);
       }
     },
 
