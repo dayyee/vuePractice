@@ -26,7 +26,7 @@ const userStore = createStore({
     GE_SUBJECT_OBJ_BY_ID: (state) => state.subjectObjById,
   },
   mutations: {
-    MU_USERS_OBJ: async (state, res) => {
+    MU_USERS_OBJ: (state, res) => {
       // list라면, .push(res) 지만
       // object라 그냥 바로 바꿔치기 가능~
       state.usersObj = res;
