@@ -50,3 +50,30 @@ export async function removeUserById(id) {
     console.log("error: removeUserById", err);
   }
 }
+
+export async function findDataByKeyWord(keyValue) {
+  try {
+    // console.log(keyValue);
+    if (typeof keyValue == "string") {
+      const result = await axios.get(`${url}/search`, {
+        params: { name: keyValue },
+      });
+      if (Object.keys(result.data).length <= 0) {
+        return 0;
+      } else {
+        return result.data;
+      }
+    } else if (typeof keyValue == "number") {
+      const result = await axios.get(`${url}/search`, {
+        params: { id: keyValue },
+      });
+      if (Object.keys(result.data).length <= 0) {
+        return 0;
+      } else {
+        return result.data;
+      }
+    }
+  } catch (err) {
+    console.log("error: findDataByKeyWord", err);
+  }
+}

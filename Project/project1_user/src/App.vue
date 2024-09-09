@@ -1,8 +1,10 @@
 <template>
   <v-app>
-    <div class="title">User Management Page</div>
+    <div class="title">
+      <a href="/">User Management Page</a>
+    </div>
 
-    <v-card class="mx-auto" color="surface-light" width="70%">
+    <v-card class="mx-auto" color="surface-light" width="75%">
       <v-card-text>
         <v-row align="center">
           <v-col>
@@ -10,10 +12,11 @@
               :loading="loading"
               append-inner-icon="mdi-magnify"
               density="compact"
-              label="ID, 이름, 과목명으로 조회 가능합니다."
+              label="ID, 이름으로 조회 가능합니다."
               variant="solo"
               hide-details
               single-line
+              v-model="keyValue"
               @click:append-inner="SearchBarOnClick"
             ></v-text-field>
           </v-col>
@@ -31,7 +34,14 @@
 
     <v-main>
       <v-container>
-        <v-table height="500px" fixed-header>
+        <div
+          v-if="Object.keys(this.usersObj).length <= 0 || resultYn"
+          class="row"
+        >
+          조회 결과가 없습니다.
+        </div>
+
+        <v-table v-else height="500px" fixed-header>
           <thead>
             <tr class="column">
               <th class="text-center">ID</th>
@@ -43,7 +53,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in paginatedUsers" :key="user.id" class="row">
+            <tr v-for="user in filteredUsers" :key="user.id" class="row">
               <td>{{ user.id }}</td>
               <td>{{ user.name }}</td>
               <td>{{ user.age }}</td>
@@ -151,17 +161,43 @@ export default {
       itemsPerPage: 5, // 페이지당 항목 수(내가 설정)
 
       selectedId: null,
+      keyValue: null,
+      resultYn: false,
     };
   },
   methods: {
-    ...mapActions(["AC_USERS_OBJ"]),
-    SearchBarOnClick() {
+    ...mapActions(["AC_USERS_OBJ", "AC_USERS_OBJ_BY_KEYWORD"]),
+
+    async SearchBarOnClick() {
+      // 조회 값 없을 때 검색 불가.
+      if (this.keyValue == null || this.keyValue.length <= 0) {
+        return alert("조회 값을 입력하세요.");
+      }
       this.loading = true;
+
+      // keyvalue가 숫자인지 확인하기(정규식써서)
+      const numberPattern = /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/;
+      const isNumber = numberPattern.test(this.keyValue);
+
+      if (isNumber) {
+        const numValue = Number(this.keyValue);
+        await this.AC_USERS_OBJ_BY_KEYWORD(numValue);
+      } else {
+        await this.AC_USERS_OBJ_BY_KEYWORD(this.keyValue);
+      }
+
+      // userOjbBykw 값 있는지 없는지 확인하여 없으면 div 출력, 있으면 테이블 출력
+      if (this.userObjBykw === 0) {
+        this.resultYn = true;
+      } else {
+        this.resultYn = false;
+      }
+
       setTimeout(() => {
         this.loading = false;
-        this.loaded = true;
-      }, 2000);
+      }, 1000);
     },
+
     EditPopupOnOff(id) {
       this.selectedId = id;
       this.EditPopupDialog = true;
@@ -194,6 +230,11 @@ export default {
         this.AC_USERS_OBJ();
       }
     },
+    DeletePopupDialog(value) {
+      if (!value) {
+        this.AC_USERS_OBJ();
+      }
+    },
   },
   // 이렇게 액션이니까 함수로 들어가있는.. 이 created에?
   created() {
@@ -203,12 +244,19 @@ export default {
   computed: {
     ...mapGetters({
       usersObj: "GE_USERS_OBJ",
+      userObjBykw: "GE_USER_OBJ_BY_KEYWORD",
     }),
     usersArray() {
       return Object.values(this.usersObj); // 객체를 배열로 변환
     },
     totalPages() {
       return Math.ceil(this.usersArray.length / this.itemsPerPage);
+    },
+    filteredUsers() {
+      // 검색 결과가 있으면 그 값을 반환하고, 없으면 기본 사용자 리스트 반환
+      return Object.keys(this.userObjBykw).length > 0
+        ? [this.userObjBykw] // obj타입이라 []로 바꿔줌
+        : this.paginatedUsers;
     },
     /*
     v-model을 사용하여 currentPage를 v-pagination에 바인딩하면, 사용자가 페이지 번호를 클릭할 때마다 currentPage 값이 자동으로 업데이트됩니다.
@@ -232,6 +280,10 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+a {
+  text-decoration: none;
+  color: #2c3e50;
+}
 .title {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: left;
@@ -242,6 +294,7 @@ export default {
   margin-left: 180px;
   text-shadow: 10px 10px 9px rgba(125, 133, 131, 0.773);
 }
+
 .button-col {
   margin-left: 0px;
   margin-right: 0px;

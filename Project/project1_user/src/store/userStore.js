@@ -6,6 +6,7 @@ import {
   updateUserById,
   findSubjectById,
   removeUserById,
+  findDataByKeyWord,
 } from "../api/userAPI";
 
 // vuex세팅
@@ -15,6 +16,7 @@ const userStore = createStore({
       usersObj: {}, // list로 받으면 안됨. [[]] 두개가 생성되어서 안된다.
       userObjById: {},
       subjectObjById: {},
+      userObjByKeyword: {},
     };
   },
   getters: {
@@ -24,6 +26,7 @@ const userStore = createStore({
     GE_USERS_OBJ: (state) => state.usersObj,
     GE_USER_OBJ_BY_ID: (state) => state.userObjById,
     GE_SUBJECT_OBJ_BY_ID: (state) => state.subjectObjById,
+    GE_USER_OBJ_BY_KEYWORD: (state) => state.userObjByKeyword,
   },
   mutations: {
     MU_USERS_OBJ: (state, res) => {
@@ -36,6 +39,9 @@ const userStore = createStore({
     },
     MU_SUBJECT_OBJ_BY_ID: (state, res) => {
       state.subjectObjById = res;
+    },
+    MU_USER_OBJ_BY_KEYWORD: (state, res) => {
+      state.userObjByKeyword = res;
     },
   },
   actions: {
@@ -78,6 +84,17 @@ const userStore = createStore({
         commit("MU_SUBJECT_OBJ_BY_ID", res);
       } catch (err) {
         console.error("findSubjectById", err);
+      }
+    },
+
+    // search user DATA By name
+    AC_USERS_OBJ_BY_KEYWORD: async ({ commit }, keyValue) => {
+      try {
+        const res = await findDataByKeyWord(keyValue);
+        // console.log(typeof keyValue);
+        commit("MU_USER_OBJ_BY_KEYWORD", res);
+      } catch (err) {
+        console.error("findDataByKeyword", err);
       }
     },
   },
