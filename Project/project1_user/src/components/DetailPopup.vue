@@ -63,7 +63,7 @@ export default {
     },
   },
   watch: {
-    //EditPopupDialog가 true일 때만 액션 실행
+    //DetailPopupDialog가 true일 때만 액션 실행
     DetailPopupDialog(value) {
       console.log("watch");
       if (value) {

@@ -8,22 +8,28 @@
     >
       <v-card
         ><div class="PopupTitle">🗄️ File List</div>
-        <v-table fixed-header>
+        <div v-if="filesList.length === 0" class="row text-center">
+          조회 결과가 없습니다.
+        </div>
+
+        <v-table v-else fixed-header>
           <thead>
             <tr class="column">
               <th class="text-center">File Name</th>
-              <th class="text-center">Created Date</th>
+              <th class="text-center">File Size</th>
+              <th class="text-center">File Modified Date</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="item in storage"
-              :key="item.id"
+              v-for="(file, i) in filesList"
+              :key="i"
               class="row"
               align="center"
             >
-              <td>{{ item.name }}</td>
-              <td>{{ item.date }}</td>
+              <td>{{ file.fileName }}</td>
+              <td>{{ file.fileSize }} byte</td>
+              <td>{{ file.lastModified }}</td>
             </tr>
           </tbody>
         </v-table>
@@ -40,21 +46,12 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "FileListPopup",
   data() {
-    return {
-      storage: [
-        {
-          name: "sample0",
-          date: "2024-09-01",
-        },
-        {
-          name: "sample1",
-          date: "2024-09-02",
-        },
-      ],
-    };
+    return {};
   },
   props: {
     FileListPopupDialog: {
@@ -62,8 +59,24 @@ export default {
       required: true,
     },
   },
-  created() {},
+  //
+  watch: {
+    // 팝업이 열릴 때마다 파일 리스트를 다시 불러옴
+    // value는 변경될 값이니까, 변경되는 값이 true일때, 아래 코드 시행.
+    FileListPopupDialog(value) {
+      if (value) {
+        this.AC_FILES_LIST();
+      }
+    },
+  },
+  // 데이터 불러오고..
+  computed: {
+    ...mapGetters({
+      filesList: "GE_FILES_LIST",
+    }),
+  },
   methods: {
+    ...mapActions(["AC_FILES_LIST"]),
     closeDialog() {
       this.$emit("update:FileListPopupDialog", false);
     },
@@ -78,5 +91,8 @@ export default {
   padding-top: 30px;
   padding-bottom: 20px;
   font-weight: bold;
+}
+.row {
+  color: rgb(109, 107, 107);
 }
 </style>

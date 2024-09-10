@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { createStore } from "vuex";
+
 import {
   findAllUsers,
   findUserById,
@@ -10,7 +10,7 @@ import {
 } from "../api/userAPI";
 
 // vuex세팅
-const userStore = createStore({
+const userStore = {
   state() {
     return {
       usersObj: {}, // list로 받으면 안됨. [[]] 두개가 생성되어서 안된다.
@@ -31,7 +31,7 @@ const userStore = createStore({
   mutations: {
     MU_USERS_OBJ: (state, res) => {
       // list라면, .push(res) 지만
-      // object라 그냥 바로 바꿔치기 가능~
+      // object라 그냥 바로 바꿔치기 가능~ : 받아오는 데이터에 따라 다른것 같은데..
       state.usersObj = res;
     },
     MU_USER_OBJ_BY_ID: (state, res) => {
@@ -98,6 +98,6 @@ const userStore = createStore({
       }
     },
   },
-});
+};
 
 export default userStore;

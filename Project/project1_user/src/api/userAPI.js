@@ -6,8 +6,8 @@ export async function findAllUsers() {
   try {
     const result = await axios.get(`${url}/all`);
     return result.data;
-  } catch {
-    console.log("error: findAllUsers");
+  } catch (err) {
+    console.log("error: findAllUsers", err);
   }
 }
 
@@ -26,7 +26,9 @@ export async function updateUserById(formData) {
     return;
   }
   try {
-    const result = await axios.put(`${url}/${formData.id}`, formData);
+    const result = await axios.put(`${url}/${formData.id}`, formData, {
+      headers: { "Content-Type": `application/json` },
+    });
     return result.data;
   } catch (err) {
     console.log("error : updateUserById", err);

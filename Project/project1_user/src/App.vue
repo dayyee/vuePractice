@@ -35,7 +35,7 @@
     <v-main>
       <v-container>
         <div
-          v-if="Object.keys(this.usersObj).length <= 0 || resultYn"
+          v-if="Object.keys(this.usersObj).length === 0 || resultYn"
           class="row"
         >
           조회 결과가 없습니다.
