@@ -22,17 +22,22 @@ export async function findUserById(id) {
 
 export async function updateUserById(formData) {
   if (!formData.id) {
-    console.error("Error: formData.id is undefined or null.");
-    return;
+    throw new Error("id값이 입력되지 않았습니다.");
   }
-  try {
-    const result = await axios.put(`${url}/${formData.id}`, formData, {
+  return await axios
+    .put(`${url}/${formData.id}`, formData, {
       headers: { "Content-Type": `application/json` },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      if (err.response) {
+        throw new Error(JSON.stringify(err.response.data));
+      } else {
+        throw new Error("네트워크 오류");
+      }
     });
-    return result.data;
-  } catch (err) {
-    console.log("error : updateUserById", err);
-  }
 }
 
 export async function findSubjectById(id) {

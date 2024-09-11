@@ -61,9 +61,9 @@ const userStore = {
     AC_UPDATE_USER_BY_ID: async ({ commit }, formData) => {
       try {
         const res = await updateUserById(formData);
-        return res;
+        return "사용자 정보가 성공적으로 수정되었습니다.";
       } catch (err) {
-        console.error("updateUserById", err);
+        throw err.message;
       }
     },
 
