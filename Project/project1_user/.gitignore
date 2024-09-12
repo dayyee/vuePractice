@@ -2,7 +2,6 @@
 node_modules
 /dist
 .env
-Dockerfile
 
 # local env files
 .env.local
