@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const url = "http://localhost:8080/files";
+const url =
+  process.env.VUE_APP_FILES_BE_API_URL || "http://localhost:8080/users";
 
 export async function findAllfileList() {
   try {

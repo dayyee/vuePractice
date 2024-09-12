@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const url = "http://localhost:8080/users";
+const url =
+  process.env.VUE_APP_USERS_BE_API_URL || "http://localhost:8080/users";
 
 export async function findAllUsers() {
   try {
